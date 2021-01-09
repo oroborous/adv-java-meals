@@ -1,76 +1,59 @@
 package edu.wctc;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Cookbook {
 
     // Hold all the meals that are read in from the file
-    private Meal[] meals = new Meal[100];
-    // Hold the next (empty) index in the array
-    private int i = 0;
+    private List<Meal> mealList = new ArrayList<>();
 
-    public void addElementWithStrings(String mealTypeStr, String mealNameStr, String caloriesStr) {
+    public void addMeal(String mealTypeStr, String mealNameStr, String caloriesStr) {
         MealType mealType;
 
-        // Do we have room in the array for one more?
-        if (i < meals.length) {
-
-            // Find the correct enum using a switch? Or use .fromValue() instead?
-            switch (mealTypeStr) {
-                case "Breakfast":
-                    mealType = MealType.BREAKFAST;
-                    break;
-                case "Lunch":
-                    mealType = MealType.LUNCH;
-                    break;
-                case "Dinner":
-                    mealType = MealType.DINNER;
-                    break;
-                case "Dessert":
-                    mealType = MealType.DESSERT;
-                    break;
-                default:
-                    mealType = MealType.DINNER;
-                    System.out.println("Meal Creation Error: Invalid Meal Type " + mealTypeStr + ", defaulted to Dinner.");
-            }
-
-            int calories;
-
-            if (caloriesStr.matches("-?\\d+(\\.\\d+)?")) {
-                calories = Integer.parseInt(caloriesStr);
-            } else {
-                calories = 100;
-                System.out.println("Meal Creation Error: Invalid Calories " + caloriesStr + ", defaulted to 100.");
-            }
-            meals[i++] = new Meal(mealType, mealNameStr, calories);
-        } else {
-            System.out.println("Meal Creation Error: Items exceeded system size.  File has " + i + ", while the system can only handle " + meals.length + ".");
+        try {
+            mealType = MealType.valueOf(mealTypeStr.toUpperCase());
+        } catch (IllegalArgumentException e) {
+            System.out.println(String.format("Meal Creation Error: Invalid meal type %s. Defaulted to Dinner.", mealTypeStr));
+            mealType = MealType.DINNER;
         }
+
+
+        int calories;
+
+        try {
+            calories = Integer.parseInt(caloriesStr);
+        } catch (NumberFormatException nfe) {
+            System.out.println(String.format("Meal Creation Error: Invalid calories %s. Defaulted to 100.", caloriesStr));
+            calories = 100;
+        }
+
+        mealList.add(new Meal(mealType, mealNameStr, calories));
     }
 
-    public Meal[] getMeals() {
-        return meals;
+    public List<Meal> getMeals() {
+        return mealList;
     }
 
     public void printAllMeals() {
-        for (Meal item : meals) {
-            if (item != null) {
+        for (Meal item : mealList) {
+            System.out.println(item);
+        }
+    }
+
+    public void printByNameSearch(String s) {
+        // Maybe add a message if no match found?
+        for (Meal item : mealList) {
+            // Uppercase for case insensitivity
+            if (item.getItem().contains(s)) {
                 System.out.println(item);
             }
         }
     }
 
     public void printMealsByType(MealType mealType) {
-        for (Meal item : meals) {
-            if (item != null && item.getMealType() == mealType) {
-                System.out.println(item);
-            }
-        }
-    }
-
-    public void printByNameSearch(String s) {
-        // Maybe add a message if no match found?
-        for (Meal item : meals) {
-            // Maybe make this case-insensitive?
-            if (item != null && item.getItem().indexOf(s) >= 0) {
+        for (Meal item : mealList) {
+            if (item.getMealType() == mealType) {
                 System.out.println(item);
             }
         }

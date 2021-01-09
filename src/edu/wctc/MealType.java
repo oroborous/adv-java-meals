@@ -9,7 +9,7 @@ public enum MealType {
         this.meal = meal;
     }
 
-    public String getMeal() {
+    public String getPrettyPrint() {
         return meal;
     }
 }
