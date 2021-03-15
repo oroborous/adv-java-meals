@@ -31,31 +31,38 @@ public class Cookbook {
         mealList.add(new Meal(mealType, mealNameStr, calories));
     }
 
-    public List<Meal> getMeals() {
-        return mealList;
+    public String doControlBreak() {
+        return null;
     }
 
-    public void printAllMeals() {
+    public String getAllMeals() {
+        String result = "";
         for (Meal item : mealList) {
-            System.out.println(item);
+            result += item + "\n";
         }
+        return result;
     }
 
-    public void printByNameSearch(String s) {
-        // Maybe add a message if no match found?
+    public String searchByName(String name) {
+        String result = "";
         for (Meal item : mealList) {
             // Uppercase for case insensitivity
-            if (item.getItem().contains(s)) {
-                System.out.println(item);
+            if (item.getItem().contains(name)) {
+                result += item + "\n";
             }
         }
+
+        return result.isBlank() ? "No matches found" : result;
     }
 
-    public void printMealsByType(MealType mealType) {
+    public String searchByType(MealType mealType) {
+        String result = "";
         for (Meal item : mealList) {
             if (item.getMealType() == mealType) {
-                System.out.println(item);
+                result += item + "\n";
             }
         }
+
+        return result.isBlank() ? "No matches found" : result;
     }
 }

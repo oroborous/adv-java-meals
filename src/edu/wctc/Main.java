@@ -11,7 +11,6 @@ public class Main {
     private Scanner keyboard;
     private Cookbook cookbook;
 
-
     public Main() {
         keyboard = new Scanner(System.in);
         cookbook = new Cookbook();
@@ -35,12 +34,13 @@ public class Main {
         new Main();
     }
 
+
     private void listByMealType() {
         // Default value pre-selected in case
         // something goes wrong w/user choice
         MealType mealType = MealType.DINNER;
 
-        System.out.print("Which meal type? ");
+        System.out.println("Which meal type? ");
 
         // Generate the menu using the ordinal value of the enum
         for (MealType m : MealType.values()) {
@@ -60,14 +60,14 @@ public class Main {
                     ans, mealType.getPrettyPrint()));
         }
 
-        cookbook.printMealsByType(mealType);
+        System.out.println(cookbook.searchByType(mealType));
     }
 
     private void printMenu() {
-        System.out.println("");
+        System.out.println();
         System.out.println("Select Action");
-        System.out.println("1. List All Items");
-        System.out.println("2. List All Items by Meal");
+        System.out.println("1. List All Meals");
+        System.out.println("2. List All Meals by Type");
         System.out.println("3. Search by Meal Name");
         System.out.println("4. Do Control Break");
         System.out.println("5. Exit");
@@ -83,7 +83,7 @@ public class Main {
             String ans = keyboard.nextLine();
             switch (ans) {
                 case "1":
-                    cookbook.printAllMeals();
+                    System.out.println(cookbook.getAllMeals());
                     break;
                 case "2":
                     listByMealType();
@@ -92,7 +92,7 @@ public class Main {
                     searchByName();
                     break;
                 case "4":
-                    // doControlBreak();
+                    System.out.println(cookbook.doControlBreak());
                     break;
                 case "5":
                     userContinue = false;
@@ -105,9 +105,8 @@ public class Main {
     }
 
     private void searchByName() {
-        keyboard.nextLine();
         System.out.print("Please enter name to search: ");
         String ans = keyboard.nextLine();
-        cookbook.printByNameSearch(ans);
+        System.out.println(cookbook.searchByName(ans));
     }
 }
